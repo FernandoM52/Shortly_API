@@ -6,7 +6,7 @@ export async function authValidation(req, res, next) {
   if (!token) return res.sendStatus(401);
 
   try {
-    const session = await db.query("SELECT * FROM sessoes WHERE token = $1;", [token]);
+    const session = await db.query("SELECT * FROM sessions WHERE token = $1;", [token]);
     if (!session.rows) return res.sendStatus(401);
 
     res.locals.session = session.rows[0];
