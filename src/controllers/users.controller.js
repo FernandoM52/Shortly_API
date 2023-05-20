@@ -44,3 +44,44 @@ export async function signIn(req, res) {
     res.status(500).send(err.message);
   }
 }
+
+export async function getShortLinksByUser(req, res) {
+  const { userId } = res.locals.session;
+
+  try {
+    const result = await db.query(`
+    SELECT
+    json_build_object(
+      'id', "shortLinks"."userId",
+      'name', users.name,
+      'visitCount', sum_count,
+      'shortenedUrls', json_agg(
+        json_build_object(
+          'id', "shortLinks".id,
+          'shortUrl', "shortLinks"."shortUrl",
+          'url', "shortLinks".url,
+          'visitCount', "shortLinks"."visitCount"
+        )
+      )
+    )
+    FROM (
+      SELECT "shortLinks"."userId", sum("shortLinks"."visitCount") AS sum_count
+      FROM "shortLinks"
+      JOIN users ON users.id = "shortLinks"."userId"
+      WHERE users.id = $1
+      GROUP BY "shortLinks"."userId"
+    ) AS subquery
+    JOIN "shortLinks" ON "shortLinks"."userId" = subquery."userId"
+    JOIN users ON users.id = "shortLinks"."userId"
+    GROUP BY "shortLinks"."userId", users.name, subquery.sum_count
+    ORDER BY subquery.sum_count;`
+      , [userId]);
+
+    res.send(result.rows);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
+
+
+
