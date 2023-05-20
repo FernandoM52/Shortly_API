@@ -54,7 +54,7 @@ export async function getShortLinksByUser(req, res) {
     json_build_object(
       'id', "shortLinks"."userId",
       'name', users.name,
-      'visitCount', sum_count,
+      'visitCount', SUM("shortLinks"."visitCount"),
       'shortenedUrls', json_agg(
         json_build_object(
           'id', "shortLinks".id,
@@ -63,25 +63,16 @@ export async function getShortLinksByUser(req, res) {
           'visitCount', "shortLinks"."visitCount"
         )
       )
-    )
-    FROM (
-      SELECT "shortLinks"."userId", sum("shortLinks"."visitCount") AS sum_count
-      FROM "shortLinks"
-      JOIN users ON users.id = "shortLinks"."userId"
-      WHERE users.id = $1
-      GROUP BY "shortLinks"."userId"
-    ) AS subquery
-    JOIN "shortLinks" ON "shortLinks"."userId" = subquery."userId"
+    ) AS user
+    FROM "shortLinks"
     JOIN users ON users.id = "shortLinks"."userId"
-    GROUP BY "shortLinks"."userId", users.name, subquery.sum_count
-    ORDER BY subquery.sum_count;`
+    WHERE "shortLinks"."userId" = $1
+    GROUP BY "shortLinks"."userId", users.name
+    ORDER BY SUM("shortLinks"."visitCount");`
       , [userId]);
 
-    res.send(result.rows);
+    res.send(result.rows.map(row => row.user));
   } catch (err) {
     res.status(500).send(err.message);
   }
 }
-
-
-
