@@ -27,7 +27,7 @@ export async function signIn(req, res) {
   try {
     const user = await db.query("SELECT * FROM users WHERE email = $1;", [email]);
     if (!user.rows[0]) return res.status(404).send({ message: "Valide se preencheu os campos corretamente" });
-    const { id, name } = user.rows[0];
+    const { id } = user.rows[0];
 
     const isPasswordCorrect = bcrypt.compareSync(password, user.rows[0].password);
     if (!isPasswordCorrect) return res.status(404).send({ message: "Valide se preencheu os campos corretamente" });
@@ -35,9 +35,9 @@ export async function signIn(req, res) {
     const token = uuid();
 
     await db.query(`
-      INSERT INTO sessions("userId", "userName", token)
-        VALUES($1, $2, $3);`
-      , [id, name, token]);
+      INSERT INTO sessions(token, "userId")
+        VALUES($1, $2);`
+      , [token, id]);
 
     res.send({ token });
   } catch (err) {
