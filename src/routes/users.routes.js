@@ -3,8 +3,7 @@ import validateSchema from "../middlewares/validateSchema.middleware.js";
 import { authValidation } from "../middlewares/authValidation.middleware.js";
 import { loginSchema, signUpSchema } from "../schemas/auth.schema.js";
 import { getRanking, getShortLinksByUser, signIn, signUp } from "../controllers/users.controller.js";
-import { getUrlsByUser } from "../middlewares/urls.middleware.js";
-import { validateCreateUser, validateLogin } from "../middlewares/users.middleware.js";
+import { getUrlsByUser, validateCreateUser, validateLogin } from "../middlewares/users.middleware.js";
 
 
 const userRouter = Router();

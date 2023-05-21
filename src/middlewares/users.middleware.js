@@ -1,4 +1,4 @@
-import { getUserByEmailDB, loginDB } from "../repositories/users.repository.js";
+import { getUrlsByUserDB } from "../repositories/users.repository.js";
 import bcrypt from "bcrypt";
 
 export async function validateCreateUser(req, res, next) {
@@ -30,4 +30,13 @@ export async function validateLogin(req, res, next) {
   } catch (err) {
     res.status(500).send(err.message);
   }
+}
+
+export async function getUrlsByUser(req, res, next) {
+  const { userId } = res.locals.session;
+
+  const result = await getUrlsByUserDB(userId);
+
+  res.locals.urls = result.rows;
+  next();
 }

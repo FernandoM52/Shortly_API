@@ -1,5 +1,4 @@
-import { db } from "../database/db.connection.js";
-import { createUserDB, loginDB } from "../repositories/users.repository.js";
+import { createUserDB, getRankingBD, loginDB } from "../repositories/users.repository.js";
 import { v4 as uuid } from "uuid";
 
 export async function signUp(req, res) {
@@ -34,16 +33,8 @@ export async function getShortLinksByUser(req, res) {
 
 export async function getRanking(req, res) {
   try {
-    const result = await db.query(`
-    SELECT "userId" AS id, users.name AS name, count(*) AS "linksCount", SUM("shortLinks"."visitCount") AS "visitCount"
-      FROM "shortLinks"
-      LEFT JOIN users ON users.id = "shortLinks"."userId"
-      GROUP BY "userId", users.name
-      ORDER BY "visitCount" DESC
-      LIMIT 10;`
-    )
-
-    res.send(result.rows);
+    const ranking = await getRankingBD();
+    res.send(ranking.rows);
   } catch (err) {
     res.status(500).send(err.message);
   }
