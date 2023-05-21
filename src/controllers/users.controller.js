@@ -46,32 +46,25 @@ export async function signIn(req, res) {
 }
 
 export async function getShortLinksByUser(req, res) {
-  const { userId } = res.locals.session;
+  try {
+    const user = res.locals.urls
+    res.send(user.map(row => row.user));
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
 
+export async function getRanking(req, res) {
   try {
     const result = await db.query(`
-    SELECT
-    json_build_object(
-      'id', "shortLinks"."userId",
-      'name', users.name,
-      'visitCount', SUM("shortLinks"."visitCount"),
-      'shortenedUrls', json_agg(
-        json_build_object(
-          'id', "shortLinks".id,
-          'shortUrl', "shortLinks"."shortUrl",
-          'url', "shortLinks".url,
-          'visitCount', "shortLinks"."visitCount"
-        )
-      )
-    ) AS user
-    FROM "shortLinks"
-    JOIN users ON users.id = "shortLinks"."userId"
-    WHERE "shortLinks"."userId" = $1
-    GROUP BY "shortLinks"."userId", users.name
-    ORDER BY SUM("shortLinks"."visitCount");`
-      , [userId]);
+    SELECT "userId" AS id, users.name AS name, count(*) AS "linksCount", SUM("shortLinks"."visitCount") AS "visitCount"
+      FROM "shortLinks"
+      LEFT JOIN users ON users.id = "shortLinks"."userId"
+      GROUP BY "userId", users.name
+      ORDER BY "visitCount";`
+    )
 
-    res.send(result.rows.map(row => row.user));
+    res.send(result.rows);
   } catch (err) {
     res.status(500).send(err.message);
   }
