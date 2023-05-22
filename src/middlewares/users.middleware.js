@@ -1,4 +1,4 @@
-import { getUrlsByUserDB } from "../repositories/users.repository.js";
+import { getUrlsByUserDB, getUserByEmailDB } from "../repositories/users.repository.js";
 import bcrypt from "bcrypt";
 
 export async function validateCreateUser(req, res, next) {
