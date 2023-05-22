@@ -22,7 +22,7 @@ export async function loginDB(user, token) {
   const result = await db.query(`
   INSERT INTO sessions (token, "userId")
     VALUES($1, $2);`
-    , [token, user.rows[0].id]);
+    , [token, user[0].id]);
 
   return result;
 }
