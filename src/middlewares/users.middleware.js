@@ -21,7 +21,7 @@ export async function validateLogin(req, res, next) {
     const { rows: user, rowCount: userExist } = await getUserByEmailDB(email);
     if (!userExist) return res.status(401).send({ message: "Valide se preencheu os campos corretamente" });
 
-    const isPasswordCorrect = bcrypt.compareSync(password, user.rows[0].password);
+    const isPasswordCorrect = bcrypt.compareSync(password, user[0].password);
     if (!isPasswordCorrect) return res.status(401).send({ message: "Valide se preencheu os campos corretamente" });
 
     res.locals.user = user;

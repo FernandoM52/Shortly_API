@@ -14,7 +14,7 @@ export async function signIn(req, res) {
   const { user } = res.locals;
   try {
     const token = uuid();
-    await loginDB(user, token);
+    await loginDB(user[0].id, token);
 
     res.send({ token });
   } catch (err) {

@@ -18,11 +18,11 @@ export async function createUserDB(body) {
   return result;
 }
 
-export async function loginDB(user, token) {
+export async function loginDB(id, token) {
   const result = await db.query(`
   INSERT INTO sessions (token, "userId")
     VALUES($1, $2);`
-    , [token, user[0].id]);
+    , [token, id]);
 
   return result;
 }
