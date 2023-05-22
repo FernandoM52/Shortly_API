@@ -5,7 +5,6 @@ import { loginSchema, signUpSchema } from "../schemas/auth.schema.js";
 import { getRanking, getShortLinksByUser, signIn, signUp } from "../controllers/users.controller.js";
 import { getUrlsByUser, validateCreateUser, validateLogin } from "../middlewares/users.middleware.js";
 
-
 const userRouter = Router();
 
 userRouter.post("/signup", validateSchema(signUpSchema), validateCreateUser, signUp);

@@ -1,9 +1,7 @@
-import { db } from "../database/db.connection.js";
+import { getShortUrlBD, getUrlByIdBD } from "../repositories/urls.repository.js";
 
 export async function validateReturnUrl(req, res, next) {
-  const { id } = req.params;
-
-  const url = await db.query(`SELECT * FROM "shortLinks" WHERE id = $1;`, [id]);
+  const url = await getUrlByIdBD(req.params);
   if (!url.rows[0]) return res.status(404).send({ message: "Url não existe" });
 
   res.locals.url = url.rows[0];
@@ -11,12 +9,9 @@ export async function validateReturnUrl(req, res, next) {
 }
 
 export async function validateReturnShortUrl(req, res, next) {
-  const { shortUrl } = req.params;
-
-  const url = await db.query(`SELECT * FROM "shortLinks" WHERE "shortUrl" = $1;`, [shortUrl]);
+  const url = await getShortUrlBD(req.params);
   if (!url.rows[0]) return res.status(404).send({ message: "Url não existe" });
 
   res.locals.url = url.rows[0];
   next();
 }
-

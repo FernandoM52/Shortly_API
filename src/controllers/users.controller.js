@@ -1,5 +1,5 @@
-import { createUserDB, getRankingBD, loginDB } from "../repositories/users.repository.js";
 import { v4 as uuid } from "uuid";
+import { createUserDB, getRankingBD, loginDB } from "../repositories/users.repository.js";
 
 export async function signUp(req, res) {
   try {
@@ -24,7 +24,7 @@ export async function signIn(req, res) {
 
 export async function getShortLinksByUser(req, res) {
   try {
-    const userUrls = res.locals.urls
+    const userUrls = res.locals.urls;
     res.send(userUrls);
   } catch (err) {
     res.status(500).send(err.message);
