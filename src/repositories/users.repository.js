@@ -1,4 +1,5 @@
 import { db } from "../database/db.connection.js";
+import bcrypt from "bcrypt";
 
 export async function getUserByEmailDB(email) {
   const result = await db.query("SELECT * FROM users WHERE email = $1;", [email]);
