@@ -147,6 +147,13 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 INSERT INTO public.sessions VALUES (1, '16913d50-7e5d-4fe6-8895-86250a234f93', 1, '2023-05-20 01:57:33.525147');
 INSERT INTO public.sessions VALUES (2, '33bd763b-7034-4568-8fb9-24d7078b036f', 2, '2023-05-20 02:56:03.421859');
 INSERT INTO public.sessions VALUES (3, '777547c1-865a-4720-b3bd-c4da17bb686d', 3, '2023-05-20 22:07:41.111108');
+INSERT INTO public.sessions VALUES (8, '5f248f91-988c-4c6b-bd91-9e409034ff14', 5, '2023-05-21 00:01:41.110611');
+INSERT INTO public.sessions VALUES (10, '9946c3f9-df1f-40ed-acda-ea58dec39354', 5, '2023-05-21 00:01:52.562986');
+INSERT INTO public.sessions VALUES (12, '773de5e8-4aae-4c62-b63a-024eee1a9d43', 5, '2023-05-21 00:02:11.608172');
+INSERT INTO public.sessions VALUES (14, '56559f92-c20d-41c8-8c4f-ced2da8f48f4', 5, '2023-05-21 00:02:39.621395');
+INSERT INTO public.sessions VALUES (16, 'd37fcc06-2b2d-49d9-a7a5-698bf0e73075', 5, '2023-05-21 00:05:04.222077');
+INSERT INTO public.sessions VALUES (17, '4e50b324-10a1-4bc7-8610-d4e49f8e16eb', 5, '2023-05-21 00:19:30.001599');
+INSERT INTO public.sessions VALUES (18, 'a5a0851e-a7d3-4804-a48b-a27ccc840afa', 7, '2023-05-22 11:59:38.028301');
 
 
 --
@@ -171,13 +178,16 @@ INSERT INTO public.users VALUES (1, 'Fernando', 'fernando@fernando.com', '$2b$10
 INSERT INTO public.users VALUES (2, 'Roberta', 'roberta@roberta.com', '$2b$10$QLVvepzfRolmjucWwnEa1e/eeJ0.sMAtd.TDOqqSc18yP11ZaRvtK', '2023-05-20 01:26:39.479988');
 INSERT INTO public.users VALUES (3, 'fefe', 'fefe@fefe.com', '$2b$10$Qy3tdx2s7qTJkfRJy/QwC.ixh7gvJ9hbSy8y4s5BWnlpp6pQRa0pW', '2023-05-20 22:04:09.7001');
 INSERT INTO public.users VALUES (4, 'marlene', 'marlene@marlene.com', '$2b$10$pHzg9XIx/p7XGkTXGzM8rexNKynAGuIDmgtyx8nMScOJBcp.cdlWS', '2023-05-20 22:04:19.696469');
+INSERT INTO public.users VALUES (5, 'Jose', 'Jose@Jose.com', '$2b$10$OPP7UGuz4o.IG7iLCoSWY.bUXu0T4xlw/sN/JhrvDDL5A64e6.F4S', '2023-05-20 23:35:31.96074');
+INSERT INTO public.users VALUES (6, 'Benjamin Macedo', 'Sophia51@yahoo.com', '$2b$10$rg0qoBPIkpUMzkSALsHSc.2I/zm7lN52/gmDEtgWX8hp5jPuulmTG', '2023-05-22 11:55:53.405848');
+INSERT INTO public.users VALUES (7, 'Vicente Melo', 'Vicente.Melo94@hotmail.com', '$2b$10$bj9cqVK7G3yH9tHmsz9tt.c3GZ6s5JHwKtuHEA5b1yzuyIwtz3RIm', '2023-05-22 11:59:25.594347');
 
 
 --
 -- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.sessions_id_seq', 3, true);
+SELECT pg_catalog.setval('public.sessions_id_seq', 18, true);
 
 
 --
@@ -191,7 +201,7 @@ SELECT pg_catalog.setval('public."shortLinks_id_seq"', 8, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 4, true);
+SELECT pg_catalog.setval('public.users_id_seq', 7, true);
 
 
 --
