@@ -24,8 +24,8 @@ export async function signIn(req, res) {
 
 export async function getShortLinksByUser(req, res) {
   try {
-    const user = res.locals.urls
-    res.send(user.map(row => row.user));
+    const userUrls = res.locals.urls
+    res.send(userUrls);
   } catch (err) {
     res.status(500).send(err.message);
   }

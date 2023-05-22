@@ -35,8 +35,12 @@ export async function validateLogin(req, res, next) {
 export async function getUrlsByUser(req, res, next) {
   const { userId } = res.locals.session;
 
-  const result = await getUrlsByUserDB(userId);
+  try {
+    const urls = await getUrlsByUserDB(userId);
 
-  res.locals.urls = result.rows;
-  next();
+    res.locals.urls = urls.rows[0];
+    next();
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 }

@@ -29,7 +29,36 @@ export async function loginDB(id, token) {
 
 export async function getUrlsByUserDB(userId) {
   const result = await db.query(`
-  SELECT
+  SELECT users.id, users.name, SUM("shortLinks"."visitCount") AS "visitCount", JSON_AGG(
+    JSON_BUILD_OBJECT(
+      'id', "shortLinks".id,
+      'shortUrl', "shortLinks"."shortUrl",
+      'url', "shortLinks".url,
+      'visitCount', "shortLinks"."visitCount"
+    )) AS "shortenedUrls"
+    FROM users
+    JOIN "shortLinks" ON "shortLinks"."userId" = users.id
+    WHERE users.id = $1
+    GROUP BY users.id;`
+    , [userId]);
+
+  return result;
+}
+
+export async function getRankingBD() {
+  const result = await db.query(`
+    SELECT "userId" AS id, users.name AS name, count(*) AS "linksCount", SUM("shortLinks"."visitCount") AS "visitCount"
+      FROM "shortLinks"
+      LEFT JOIN users ON users.id = "shortLinks"."userId"
+      GROUP BY "userId", users.name
+      ORDER BY "visitCount" DESC
+      LIMIT 10;`
+  );
+
+  return result;
+}
+
+/*SELECT
   json_build_object(
     'id', "shortLinks"."userId",
     'name', users.name,
@@ -48,20 +77,4 @@ export async function getUrlsByUserDB(userId) {
   WHERE "shortLinks"."userId" = $1
   GROUP BY "shortLinks"."userId", users.name
   ORDER BY SUM("shortLinks"."visitCount");`
-    , [userId]);
-
-  return result;
-}
-
-export async function getRankingBD() {
-  const result = await db.query(`
-    SELECT "userId" AS id, users.name AS name, count(*) AS "linksCount", SUM("shortLinks"."visitCount") AS "visitCount"
-      FROM "shortLinks"
-      LEFT JOIN users ON users.id = "shortLinks"."userId"
-      GROUP BY "userId", users.name
-      ORDER BY "visitCount" DESC
-      LIMIT 10;`
-  );
-
-  return result;
-}
+    , [userId]);*/
