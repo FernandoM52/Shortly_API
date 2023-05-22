@@ -9,7 +9,7 @@ import { getUrlsByUser, validateCreateUser, validateLogin } from "../middlewares
 const userRouter = Router();
 
 userRouter.post("/signup", validateSchema(signUpSchema), validateCreateUser, signUp);
-userRouter.post("/login", validateSchema(loginSchema), validateLogin, signIn);
+userRouter.post("/signin", validateSchema(loginSchema), validateLogin, signIn);
 userRouter.get("/users/me", authValidation, getUrlsByUser, getShortLinksByUser);
 userRouter.get("/ranking", getRanking);
 export default userRouter;
